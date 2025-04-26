@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Arena - Multiplayer Battle Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- Welcome Screen -->
+        <div id="loginScreen" class="screen">
+            <div class="welcome-container">
+                <h1 class="game-title">Neon Arena</h1>
+                
+                <!-- Controls Section -->
+                <div class="controls-section">
+                    <h2>Game Controls</h2>
+                    <div class="controls-grid">
+                        <div class="control-item">
+                            <span class="key">W</span>
+                            <span>DASH</span>
+                        
+                        </div>
+                        <div class="control-item">
+                            <span class="key">SPACE</span>
+                            <span>Dash</span>
+                        </div>
+                        
+                        <div class="control-item">
+                            <span class="key">MOUSE</span>
+                            <span> Attack</span>
+                        </div>
+
+                        <div class="control-item">
+                            <span class="key">Q</span>
+                            <span>MODO Attack</span>
+                        </div>
+                        <div class="control-item">
+                            <span class="key">E</span>
+                            <span>SHILD</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skins Section -->
+                <div class="skins-section">
+                    <h2>Select Your Skin</h2>
+                    <div class="skins-grid">
+                        <!-- Free Skins -->
+                        <div class="skin-item" data-skin="default">
+                            <div class="skin-preview default-skin"></div>
+                            <span class="skin-name">Default</span>
+                            <span class="skin-status">Free</span>
+                        </div>
+                        <div class="skin-item" data-skin="neon">
+                            <div class="skin-preview neon-skin"></div>
+                            <span class="skin-name">Neon</span>
+                            <span class="skin-status">Free</span>
+                        </div>
+                        
+                        <!-- Premium Skins -->
+                        <div class="skin-item premium" data-skin="golden">
+                            <div class="skin-preview golden-skin"></div>
+                            <span class="skin-name">Golden</span>
+                            <span class="skin-status">Premium</span>
+                            <button class="buy-button">500 Coins</button>
+                        </div>
+                        <div class="skin-item premium" data-skin="rainbow">
+                            <div class="skin-preview rainbow-skin"></div>
+                            <span class="skin-name">Rainbow</span>
+                            <span class="skin-status">Premium</span>
+                            <button class="buy-button">1000 Coins</button>
+                        </div>
+                        <div class="skin-item premium" data-skin="cosmic">
+                            <div class="skin-preview cosmic-skin"></div>
+                            <span class="skin-name">Cosmic</span>
+                            <span class="skin-status">Premium</span>
+                            <button class="buy-button">2000 Coins</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Start Section -->
+                <div class="start-section">
+                    <input type="text" id="nickname" placeholder="Enter your nickname" maxlength="15">
+                    <button id="startButton" class="start-button">Start Game</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameOverScreen" class="screen">
+            <div class="game-over-container">
+                <h2>Game Over</h2>
+                <div class="final-score">Score: <span id="finalScore">0</span></div>
+                <div class="high-scores">
+                    <h3>High Scores</h3>
+                    <div id="highScoresList"></div>
+                </div>
+                <button id="restartButton" class="play-again-button">Play Again</button>
+            </div>
+        </div>
+
+        <!-- Loading Screen -->
+        <div id="loadingScreen" class="screen">
+            <div class="loading-container">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Loading Game...</div>
+            </div>
+        </div>
+
+        <!-- Game UI -->
+        <div class="game-ui">
+            <div class="top-panel">
+                <div id="scoreDisplay">Score: 0</div>
+            </div>
+            <div class="right-panel">
+                <div id="bulletInfo">
+                    <span>Bullets:</span>
+                    <span id="bulletCount">5</span>
+                    <div id="bulletCooldown" class="cooldown-bar">
+                        <div class="cooldown-progress"></div>
+                    </div>
+                </div>
+                <div id="shieldInfo">
+                    <span>Shield:</span>
+                    <span id="shieldStatus">Ready</span>
+                    <div id="shieldCooldown" class="cooldown-bar">
+                        <div class="cooldown-progress"></div>
+                    </div>
+                </div>
+                <div id="ultimateInfo">
+                    <span>Ultimate:</span>
+                    <span id="ultimateStatus">Ready</span>
+                    <div id="ultimateCooldown" class="cooldown-bar">
+                        <div class="cooldown-progress"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="main.js"></script>
+</body>
+</html>
