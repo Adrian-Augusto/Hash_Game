@@ -145,67 +145,6 @@
     <!-- Remover suporte fora do menu -->
     <div id="supportCenter" style="display:none"></div>
   </div>
-  <script src="jogo.js"></script>
-  <script>
-const characterData = {
-  roxo:   { color: "#a259ff", effect: "Equilíbrio", attr: "Padrão" },
-  verde:  { color: "#00ff88", effect: "+Velocidade", attr: "Speed" },
-  azul:   { color: "#00bfff", effect: "Atordoa inimigos", attr: "Stun" },
-  amarelo:{ color: "#ffe066", effect: "Dano ao longo do tempo", attr: "Queimadura" },
-  vermelho:{ color: "#ff3b3b", effect: "Dano em área", attr: "Explosão" }
-};
-
-let selectedChar = localStorage.getItem('selectedChar') || 'roxo';
-
-function updateCharSelection() {
-  document.querySelectorAll('#characterSelectGrid .color-circle').forEach(circle => {
-    if(circle.dataset.char === selectedChar) {
-      circle.classList.add('selected');
-      circle.style.outline = '4px solid #fff';
-      circle.style.boxShadow = '0 0 24px #fff, 0 0 18px ' + characterData[selectedChar].color;
-      circle.style.background = characterData[selectedChar].color;
-    } else {
-      circle.classList.remove('selected');
-      circle.style.outline = '';
-      circle.style.boxShadow = '';
-      circle.style.background = circle.style.backgroundColor;
-    }
-  });
-  document.querySelectorAll('.select-char-btn').forEach(btn => {
-    if(btn.dataset.char === selectedChar) {
-      btn.textContent = 'Selecionado';
-      btn.style.opacity = '1';
-      btn.style.border = '2px solid #fff';
-    } else {
-      btn.textContent = 'Selecionar';
-      btn.style.opacity = '0.7';
-      btn.style.border = 'none';
-    }
-  });
-}
-
-document.querySelectorAll('.select-char-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    selectedChar = btn.dataset.char;
-    localStorage.setItem('selectedChar', selectedChar);
-    updateCharSelection();
-  });
-});
-updateCharSelection();
-
-// Expor para main.js SEMPRE o valor atualizado
-window.getSelectedCharacter = function() { return characterData[selectedChar]; };
-window.getSelectedCharKey = function() { return selectedChar; };
-
-const pixKeyValue = '00020101021126940014br.gov.bcb.pix0136537aa340-66fc-469a-8d05-d9445f75112f0232Estara ajudando projeto expandir5204000053039865802BR5923ADRIAN AUGUSTO DA SILVA6013SALTO DO ITAR62070503***63042E8E';
-document.getElementById('copyPixBtn').addEventListener('click', function() {
-  navigator.clipboard.writeText(pixKeyValue).then(function() {
-    const feedback = document.getElementById('copyFeedback');
-    feedback.style.display = 'block';
-    setTimeout(function(){ feedback.style.display = 'none'; }, 1500);
-  });
-});
-  </script>
   <style>
     #characterSelectGrid .color-circle.selected {
       outline: 4px solid #fff !important;
@@ -377,5 +316,67 @@ document.getElementById('copyPixBtn').addEventListener('click', function() {
       font-weight: bold;
     }
   </style>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="jogo.js"></script>
+  <script>
+const characterData = {
+  roxo:   { color: "#a259ff", effect: "Equilíbrio", attr: "Padrão" },
+  verde:  { color: "#00ff88", effect: "+Velocidade", attr: "Speed" },
+  azul:   { color: "#00bfff", effect: "Atordoa inimigos", attr: "Stun" },
+  amarelo:{ color: "#ffe066", effect: "Dano ao longo do tempo", attr: "Queimadura" },
+  vermelho:{ color: "#ff3b3b", effect: "Dano em área", attr: "Explosão" }
+};
+
+let selectedChar = localStorage.getItem('selectedChar') || 'roxo';
+
+function updateCharSelection() {
+  document.querySelectorAll('#characterSelectGrid .color-circle').forEach(circle => {
+    if(circle.dataset.char === selectedChar) {
+      circle.classList.add('selected');
+      circle.style.outline = '4px solid #fff';
+      circle.style.boxShadow = '0 0 24px #fff, 0 0 18px ' + characterData[selectedChar].color;
+      circle.style.background = characterData[selectedChar].color;
+    } else {
+      circle.classList.remove('selected');
+      circle.style.outline = '';
+      circle.style.boxShadow = '';
+      circle.style.background = circle.style.backgroundColor;
+    }
+  });
+  document.querySelectorAll('.select-char-btn').forEach(btn => {
+    if(btn.dataset.char === selectedChar) {
+      btn.textContent = 'Selecionado';
+      btn.style.opacity = '1';
+      btn.style.border = '2px solid #fff';
+    } else {
+      btn.textContent = 'Selecionar';
+      btn.style.opacity = '0.7';
+      btn.style.border = 'none';
+    }
+  });
+}
+
+document.querySelectorAll('.select-char-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    selectedChar = btn.dataset.char;
+    localStorage.setItem('selectedChar', selectedChar);
+    updateCharSelection();
+  });
+});
+updateCharSelection();
+
+// Expor para main.js SEMPRE o valor atualizado
+window.getSelectedCharacter = function() { return characterData[selectedChar]; };
+window.getSelectedCharKey = function() { return selectedChar; };
+
+const pixKeyValue = '00020101021126940014br.gov.bcb.pix0136537aa340-66fc-469a-8d05-d9445f75112f0232Estara ajudando projeto expandir5204000053039865802BR5923ADRIAN AUGUSTO DA SILVA6013SALTO DO ITAR62070503***63042E8E';
+document.getElementById('copyPixBtn').addEventListener('click', function() {
+  navigator.clipboard.writeText(pixKeyValue).then(function() {
+    const feedback = document.getElementById('copyFeedback');
+    feedback.style.display = 'block';
+    setTimeout(function(){ feedback.style.display = 'none'; }, 1500);
+  });
+});
+  </script>
 </body>
 </html>
