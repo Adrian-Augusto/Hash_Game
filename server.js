@@ -5,6 +5,18 @@ const cors = require('cors');
 const path = require('path');
 
 const app = express();
+const server = http.createServer(app);
+
+// Configuração do Socket.IO com CORS e transporte WebSocket
+const io = socketio(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"],
+        credentials: true
+    },
+    transports: ['websocket', 'polling'],
+    allowEIO3: true
+});
 
 // Configuração básica
 app.use(cors());
@@ -30,22 +42,62 @@ app.use((err, req, res, next) => {
     res.status(500).send('Algo deu errado!');
 });
 
-const server = http.createServer(app);
-const io = socketio(server, {
-    cors: {
-        origin: "*",
-        methods: ["GET", "POST"]
-    }
-});
-
 // Configuração do Socket.IO
 io.on('connection', (socket) => {
-    console.log('Novo cliente conectado');
+    console.log('Novo cliente conectado:', socket.id);
+    
+    // Entra na sala padrão
+    socket.join('defaultRoom');
+    console.log('Jogador entrou na sala defaultRoom');
+    
+    // Recebe o nickname do jogador
+    socket.on('setNickname', (nickname) => {
+        console.log('Nickname recebido:', nickname);
+        // Salva o nickname no socket
+        socket.nickname = nickname.toUpperCase();
+        
+        // Envia mensagem para todos na sala com o nickname
+        io.to('defaultRoom').emit('playerJoined', { 
+            id: socket.id,
+            nickname: nickname.toUpperCase()
+        });
+        
+        // Envia a lista atual de jogadores para todos
+        const players = Array.from(io.sockets.sockets.values())
+            .filter(s => s.nickname) // Apenas jogadores com nickname
+            .map(s => ({
+                id: s.id,
+                nickname: s.nickname
+            }));
+        
+        io.to('defaultRoom').emit('currentPlayers', players);
+    });
     
     socket.on('disconnect', () => {
-        console.log('Cliente desconectado');
+        console.log('Cliente desconectado:', socket.id);
+        io.to('defaultRoom').emit('playerLeft', { id: socket.id });
     });
 });
+
+// Função para obter todos os jogadores na sala
+function getPlayersInRoom(room) {
+    const players = [];
+    const roomSockets = io.sockets.adapter.rooms.get(room);
+    
+    if (roomSockets) {
+        for (const socketId of roomSockets) {
+            const socket = io.sockets.sockets.get(socketId);
+            if (socket && socket.nickname) {
+                players.push({
+                    id: socket.id,
+                    nickname: socket.nickname
+                });
+            }
+        }
+    }
+    
+    return players;
+}
 
 // Inicia o servidor
 const PORT = process.env.PORT || 3000;
